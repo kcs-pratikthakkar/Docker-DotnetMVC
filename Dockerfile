@@ -10,7 +10,7 @@ RUN nuget restore
 # copy everything else and build app
 COPY . ./aspnetapp/
 WORKDIR /app/aspnetapp
-RUN msbuild /p:Configuration=Release
+RUN msbuild /t:rebuild /p:Configuration=Release /p:DeployOnBuild=True
 
 
 # copy build artifacts into runtime image
