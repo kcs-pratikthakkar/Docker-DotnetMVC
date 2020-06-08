@@ -1,8 +1,12 @@
-# The `FROM` instruction specifies the base image. You are
-# extending the `microsoft/aspnet` image.
-FROM microsoft/aspnet
+FROM alexellisio/msbuild:12.0
+SHELL ["powershell"]
 
-WORKDIR /inetpub/wwwroot
+COPY . 'C:\\build\\'
+WORKDIR 'C:\\build\\'
 
-# The final instruction copies the site you published earlier into the container.
-COPY $(System.DefaultWorkingDirectory)/k8s-demo-ASP.NET-CI/drop/ /inetpub/wwwroot
+RUN ["nuget.exe", "restore"]
+RUN ["C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\msbuild.exe", "C:\\build\\CICD.sln"]
+
+## Usage: build image, then create container and copy out the bin directory.
+
+CMD ["powershell"]
