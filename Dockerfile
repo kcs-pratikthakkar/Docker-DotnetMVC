@@ -1,12 +1,19 @@
-FROM alexellisio/msbuild:12.0
-SHELL ["powershell"]
+FROM microsoft/dotnet-framework:4.7.2-sdk AS build
+WORKDIR /app
 
-COPY . 'C:\\build\\'
-WORKDIR 'C:\\build\\'
+# copy csproj and restore as distinct layers
+COPY *.sln .
+COPY aspnetapp/*.csproj ./aspnetapp/
+COPY aspnetapp/*.config ./aspnetapp/
+RUN nuget restore
 
-RUN ["nuget.exe", "restore"]
-RUN ["C:\\Program Files (x86)\\MSBuild\\12.0\\Bin\\msbuild.exe", "C:\\build\\CICD.sln"]
+# copy everything else and build app
+COPY aspnetapp/. ./aspnetapp/
+WORKDIR /app/aspnetapp
+RUN msbuild /p:Configuration=Release
 
-## Usage: build image, then create container and copy out the bin directory.
 
-CMD ["powershell"]
+# copy build artifacts into runtime image
+FROM microsoft/aspnet:4.7.2 AS runtime
+WORKDIR /inetpub/wwwroot
+COPY --from=build /app/aspnetapp/. ./
