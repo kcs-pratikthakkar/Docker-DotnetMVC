@@ -3,12 +3,12 @@ WORKDIR /app
 
 # copy csproj and restore as distinct layers
 COPY *.sln .
-COPY aspnetapp/*.csproj ./aspnetapp/
-COPY aspnetapp/*.config ./aspnetapp/
+COPY *.csproj ./aspnetapp/
+COPY *.config ./aspnetapp/
 RUN nuget restore
 
 # copy everything else and build app
-COPY aspnetapp/. ./aspnetapp/
+COPY . ./aspnetapp/
 WORKDIR /app/aspnetapp
 RUN msbuild /p:Configuration=Release
 
