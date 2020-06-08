@@ -4,7 +4,7 @@ WORKDIR /app
 # copy csproj and restore as distinct layers
 COPY *.sln .
 COPY /CICD/CICD.csproj ./aspnetapp/
-COPY *.config ./aspnetapp/
+COPY /CICD/Web.config ./aspnetapp/
 RUN nuget restore
 
 # copy everything else and build app
