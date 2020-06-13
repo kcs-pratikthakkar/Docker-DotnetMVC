@@ -3,7 +3,7 @@ FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-1803
 
 SHELL ["powershell", "-command"]
 
-RUN Install-WindowsFeature Web-ASP; `
+RUN Install-WindowsFeature Web-ASP;
 
 EXPOSE 80
 
