@@ -1,13 +1,16 @@
-FROM microsoft/iis
-SHELL ["powershell"]
+# escape=`
+FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-1803
 
-RUN Install-WindowsFeature NET-Framework-45-ASPNET ; \
-    Install-WindowsFeature Web-Asp-Net45
+SHELL ["powershell", "-command"]
 
-COPY . /inetpub/wwwroot
-RUN Remove-WebSite -Name 'Default Web Site'
-RUN New-Website -Name 'guidgenerator' -Port 80 \
-    -PhysicalPath 'c:\GuidGenerator' -ApplicationPool '.NET v4.5'
+RUN Install-WindowsFeature Web-ASP; `
+
 EXPOSE 80
 
-CMD ["ping", "-t", "localhost"]
+RUN Remove-Website -Name 'Default Web Site'; `
+    md c:\mywebsite; `
+    New-IISSite -Name "mywebsite" `
+                -PhysicalPath 'c:\mywebsite' `
+                -BindingInformation "*:80:";
+
+ADD . c:\mywebsite
