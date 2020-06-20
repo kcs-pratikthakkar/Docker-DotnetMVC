@@ -7,3 +7,5 @@ WORKDIR /inetpub/wwwroot
 COPY index.html .
 
 EXPOSE 80
+
+ENTRYPOINT ["C:\\ServiceMonitor.exe", "w3svc"]
