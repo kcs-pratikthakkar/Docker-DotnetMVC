@@ -1,16 +1,7 @@
-# escape=`
-FROM mcr.microsoft.com/windows/servercore/iis:windowsservercore-1803
+FROM mcr.microsoft.com/windows/servercore/iis
 
-SHELL ["powershell", "-command"]
+RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
 
-RUN Install-WindowsFeature Web-ASP;
+WORKDIR /inetpub/wwwroot
 
-EXPOSE 80
-
-RUN Remove-Website -Name 'Default Web Site';
-RUN md c:\mywebsite;
-RUN New-IISSite -Name "mywebsite" `
-                -PhysicalPath 'c:\mywebsite' `
-                -BindingInformation "*:80:";
-
-ADD . c:\mywebsite
+COPY index.html .
