@@ -9,4 +9,4 @@ RUN powershell -NoProfile -Command \
  
 EXPOSE 8000
  
-ADD content/ /myapp
+ADD bin/ /myapp
