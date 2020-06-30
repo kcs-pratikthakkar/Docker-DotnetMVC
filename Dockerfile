@@ -2,7 +2,7 @@ FROM microsoft/iis
 
 WORKDIR /inetpub/wwwroot
 
-ADD bin/ /inetpub/wwwroot
+ADD content/ /inetpub/wwwroot
 
 RUN powershell -NoProfile -Command \
     Install-WindowsFeature NET-Framework-45-ASPNET; \
