@@ -1,8 +1,10 @@
 FROM microsoft/iis
 
+RUN powershell -NoProfile -Command Remove-Item -Recurse C:\inetpub\wwwroot\*
+
 WORKDIR /inetpub/wwwroot
 
-ADD Content/D_C/a/1/s/SmartTownAPI/obj/Release/Package/PackageTmp /inetpub/wwwroot
+ADD Content/ /inetpub/wwwroot
 
 RUN powershell -NoProfile -Command \
     Install-WindowsFeature NET-Framework-45-ASPNET; \
